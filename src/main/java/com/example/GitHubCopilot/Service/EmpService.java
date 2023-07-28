@@ -8,11 +8,11 @@ import java.util.Optional;
 
 public interface EmpService {
 
-    public Employee addEmployee(EmpValidation emp);
+     Employee addEmployee(EmpValidation emp);
     //public Employee addEmployee(Employee emp);
-    public String removeEmployee(int id);
-    public Optional<Employee> findEmpByID(int id);
-    public List<Employee> getAllEmployee();
+     String removeEmployee(int id);
+     Optional<Employee> findEmpByID(int id);
+     List<Employee> getAllEmployee();
 
-    public Employee updateEmployee(EmpValidation emp);
+    public Optional<Employee> updateEmployee(EmpValidation emp);
 }

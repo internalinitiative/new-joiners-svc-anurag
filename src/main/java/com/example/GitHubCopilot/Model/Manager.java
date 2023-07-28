@@ -7,19 +7,16 @@ import lombok.*;
 @AllArgsConstructor(staticName = "build")
 @NoArgsConstructor
 @Data
-@Setter
-@Getter
-@ToString
 public class Manager {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int mid;
+    private int id;
     @Column(name = "manager_name")
-    private String mname;
+    private String name;
     @Column(name="manager_email")
-    private String memail;
+    private String email;
     @Column(name = "manager_mobile")
-    private String mmob;
+    private String mobile;
     @Column(name="department")
-    private String mdepartment;
+    private String department;
 }

@@ -13,62 +13,66 @@ import java.util.Optional;
 @Service
 public class EmpServiceImpl implements EmpService {
 
+    private EmployeeRepo employeeRepo;
+
     @Autowired
-    private EmployeeRepo emprepo;
+    public EmpServiceImpl(EmployeeRepo employeeRepo){
+        this.employeeRepo=employeeRepo;
+    }
 
     @Override
     public Employee addEmployee(EmpValidation empValidation) {
        Employee employee =
-               Employee.build(empValidation.getEid(),empValidation.getEname(),empValidation.getEemail(),empValidation.getEmob(),empValidation.getEsalary());
+               Employee.build(empValidation.getId(),empValidation.getName(),empValidation.getEmail(),empValidation.getMobile(),empValidation.getSalary());
 
-       return emprepo.save(employee);
+       return employeeRepo.save(employee);
    }
 
 //    @Override
 //    public Employee addEmployee(Employee emp) {
-//        Employee employee = emprepo.save(emp);
+//        Employee employee = employeeRepo.save(emp);
 //        return employee;
 //    }
 
     @Override
     public String removeEmployee(int id) {
 
-        emprepo.deleteById(id);
+        employeeRepo.deleteById(id);
         return "employee deleted successfully";
     }
 
     @Override
     public Optional<Employee> findEmpByID(int id) {
 
-        Optional<Employee> emp = emprepo.findById(id);
-        if(emp.isPresent())
-            return emp;
+        Optional<Employee> empById = employeeRepo.findById(id);
+        if(empById.isPresent())
+            return empById;
         else
-            return null;
+            return Optional.empty();
 
     }
 
     @Override
     public List<Employee> getAllEmployee() {
-        List<Employee> emp = emprepo.findAll();
-        return emp;
+        List<Employee> getAllEmp = employeeRepo.findAll();
+        return getAllEmp;
     }
 
     @Override
-    public Employee updateEmployee(EmpValidation emp) {
+    public Optional<Employee> updateEmployee(EmpValidation emp) {
 
-        Optional<Employee> empdb = this.emprepo.findById(emp.getEid());
-        Employee empUpdt = empdb.get();
+        Optional<Employee> empdb = this.employeeRepo.findById(emp.getId());
         if(empdb.isPresent()){
-            System.out.println("in if "+empdb.isPresent());
-
-            empUpdt.setEid(emp.getEid());
-            empUpdt.setEemail(emp.getEemail());
-            empUpdt.setEmob(emp.getEmob());
-            empUpdt.setEname(emp.getEname());
-            empUpdt.setEsalary(emp.getEsalary());
-
+            //System.out.println("in if "+empdb.isPresent());
+            Employee empUpdt = empdb.get();
+            empUpdt.setId(emp.getId());
+            empUpdt.setEmail(emp.getEmail());
+            empUpdt.setMobile(emp.getMobile());
+            empUpdt.setName(emp.getName());
+            empUpdt.setSalary(emp.getSalary());
+            return Optional.of(employeeRepo.save(empUpdt));
         }
-        return empUpdt;
+
+        return Optional.empty();
     }
 }

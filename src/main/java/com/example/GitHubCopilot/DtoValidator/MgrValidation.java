@@ -13,21 +13,21 @@ import lombok.*;
 @ToString
 public class MgrValidation {
 
-        private int mid;
+        private int id;
 
         @NotNull(message = "manager name should not be null")
         @NotBlank(message = " manager name can not be blank")
-        private String mname;
+        private String name;
 
         @NotNull(message = "manager email should not be null")
         @NotBlank(message = " manager email can not be blank")
         @Email
-        private String memail;
+        private String email;
 
         @NotNull
         @Pattern(regexp = "^\\d{10}$" , message = "invalid mobile number entered")
-        private String mmob;
+        private String mobile;
 
         @NotBlank(message = " department can not be blank")
-        private String mdepartment;
+        private String department;
 }

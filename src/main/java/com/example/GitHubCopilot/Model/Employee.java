@@ -11,24 +11,21 @@ import lombok.*;
 @AllArgsConstructor(staticName = "build")
 @NoArgsConstructor
 @Data
-@Getter
-@Setter
-@ToString
 public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int eid;
+    private int id;
 
     @Column(name = "emp_name")
-    private String ename;
+    private String name;
 
     @Column(name = "emp_mailid")
-    private String eemail;
+    private String email;
 
     @Column(name ="emp_mobile")
-    private String emob;
+    private String mobile;
 
     @Column(name = "emp_salary")
-    private int esalary;
+    private int salary;
 }

@@ -9,16 +9,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.example.GitHubCopilot.Service.ManagerService;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/mgr")
+@RequestMapping("/manager")
 public class ManagerController {
 
+    private ManagerService managerService;
+
     @Autowired
-    private ManagerServiceImpl managerservice;
+    public ManagerController(ManagerService managerService){
+        this.managerService=managerService;
+    }
 
     @RequestMapping("/home")
     public String homepage() {
@@ -26,43 +31,43 @@ public class ManagerController {
         return "welcome to Manager home page";
     }
 
-    @PostMapping("/manager")
+    @PostMapping
     public ResponseEntity<Manager> addManager(@RequestBody @Valid MgrValidation manager){
 
-        Manager mgr = managerservice.addManager(manager);
+        Manager mgr = managerService.addManager(manager);
 
         return new ResponseEntity<>(mgr, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/removemgr/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> removeManager(@PathVariable int id){
 
-        managerservice.removeManager(id);
+        managerService.removeManager(id);
         return new ResponseEntity<String>("Remove Manager successfully",HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/getmgr/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Optional<Manager>> findMgrById(@PathVariable int id){
 
-        Optional<Manager> mgrByID = managerservice.findManagerByID(id);
+        Optional<Manager> mgrByID = managerService.findManagerByID(id);
 
         return new ResponseEntity<Optional<Manager>>(mgrByID,HttpStatus.ACCEPTED);
 
     }
 
-    @GetMapping("/managers")
+    @GetMapping
     public ResponseEntity<List<Manager>> listOfManager(){
-        List<Manager> allManager = managerservice.getAllManager();
+        List<Manager> allManager = managerService.getAllManager();
 
         return new ResponseEntity<List<Manager>>(allManager,HttpStatus.ACCEPTED);
     }
 
-    @PutMapping("/updatemgr/{id}")
-    public ResponseEntity<Manager> updateManager(@PathVariable int id,@RequestBody @Valid MgrValidation manager){
+    @PutMapping("/{id}")
+    public ResponseEntity<Optional<Manager>> updateManager(@PathVariable int id,@RequestBody @Valid MgrValidation manager){
 
-        manager.setMid(id);
+        manager.setId(id);
 
-        Manager updtMgr = managerservice.updateManager(manager);
+        Optional<Manager> updtMgr = managerService.updateManager(manager);
 
         return new ResponseEntity<>(updtMgr,HttpStatus.OK);
     }

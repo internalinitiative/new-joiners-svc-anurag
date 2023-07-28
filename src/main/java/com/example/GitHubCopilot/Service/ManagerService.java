@@ -9,9 +9,9 @@ import java.util.Optional;
 
 public interface ManagerService {
 
-    public Manager addManager(MgrValidation mgr);
-    public String removeManager(int id);
-    public Optional<Manager> findManagerByID(int id);
-    public List<Manager> getAllManager();
-    public Manager updateManager(MgrValidation mgr);
+    Manager addManager(MgrValidation mgr);
+    String removeManager(int id);
+    Optional<Manager> findManagerByID(int id);
+    List<Manager> getAllManager();
+    Optional<Manager> updateManager(MgrValidation mgr);
 }

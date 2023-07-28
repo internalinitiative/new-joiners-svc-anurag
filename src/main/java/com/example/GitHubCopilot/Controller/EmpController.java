@@ -3,7 +3,6 @@ package com.example.GitHubCopilot.Controller;
 import com.example.GitHubCopilot.DtoValidator.EmpValidation;
 import com.example.GitHubCopilot.Model.Employee;
 import com.example.GitHubCopilot.Service.EmpService;
-import com.example.GitHubCopilot.ServiceImpl.EmpServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,11 +13,15 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/emp")
+@RequestMapping("/employee")
 public class EmpController {
 
+    private EmpService empService;
+
     @Autowired
-    private EmpServiceImpl empservice;
+    public EmpController(EmpService empService){
+        this.empService=empService;
+    }
 
     @RequestMapping("/home")
     public String homepage() {
@@ -27,42 +30,42 @@ public class EmpController {
     }
 
 
-    @PostMapping("/employee")
+    @PostMapping
     public ResponseEntity<Employee> addEmployees(@RequestBody @Valid EmpValidation employee){
 
-        Employee emp = empservice.addEmployee(employee);
+        Employee emp = empService.addEmployee(employee);
 
         return new ResponseEntity<>(emp, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/removeemp/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> removeEmployee(@PathVariable int id){
 
-        empservice.removeEmployee(id);
+        empService.removeEmployee(id);
         return new ResponseEntity<String>("Remove Employee successfully",HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/getemp/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Optional<Employee>> findById(@PathVariable int id){
 
-        Optional<Employee> empByID = empservice.findEmpByID(id);
+        Optional<Employee> empByID = empService.findEmpByID(id);
         
         return new ResponseEntity<Optional<Employee>>(empByID,HttpStatus.ACCEPTED);
 
     }
 
-    @GetMapping("/employees")
+    @GetMapping
     public ResponseEntity<List<Employee>> listOfEmployee(){
-        List<Employee> allEmployee = empservice.getAllEmployee();
+        List<Employee> allEmployee = empService.getAllEmployee();
 
         return new ResponseEntity<List<Employee>>(allEmployee,HttpStatus.ACCEPTED);
     }
 
-    @PutMapping("/updateemp/{id}")
-    public ResponseEntity<Employee> updateEmployee(@PathVariable int id,@RequestBody @Valid EmpValidation employee){
+    @PutMapping("/{id}")
+    public ResponseEntity<Optional<Employee>> updateEmployee(@PathVariable int id,@RequestBody @Valid EmpValidation employee){
 
-        employee.setEid(id);
-        Employee updtEmp = empservice.updateEmployee(employee);
+        employee.setId(id);
+        Optional<Employee> updtEmp = empService.updateEmployee(employee);
         return new ResponseEntity<>(updtEmp,HttpStatus.OK);
     }
 }

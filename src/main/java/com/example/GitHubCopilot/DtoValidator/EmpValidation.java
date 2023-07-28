@@ -17,20 +17,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EmpValidation {
 
-    private int eid;
+    private int id;
 
     @NotNull(message = "employee name should not be null")
     @NotBlank(message = " name can not be blank")
-    private String ename;
+    private String name;
 
     @NotNull(message = "employee email should not be null")
     @NotBlank(message = " email can not be blank")
     @Email
-    private String eemail;
+    private String email;
 
     @NotNull
     @Pattern(regexp = "^\\d{10}$" , message = "invalid mobile number entered")
-    private String emob;
+    private String mobile;
 
-    private int esalary;
+    private int salary;
 }

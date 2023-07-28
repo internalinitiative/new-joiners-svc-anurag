@@ -13,13 +13,16 @@ import java.util.Optional;
 @Service
 public class ManagerServiceImpl implements ManagerService {
 
-    @Autowired
     private ManagerRepo managerRepo;
+    @Autowired
+    public ManagerServiceImpl(ManagerRepo managerRepo){
+        this.managerRepo=managerRepo;
+    }
 
     @Override
     public Manager addManager(MgrValidation mgrValidation) {
         Manager manager =
-                Manager.build(mgrValidation.getMid(),mgrValidation.getMname(),mgrValidation.getMemail(),mgrValidation.getMmob(),mgrValidation.getMdepartment());
+                Manager.build(mgrValidation.getId(),mgrValidation.getName(),mgrValidation.getEmail(),mgrValidation.getMobile(),mgrValidation.getDepartment());
 
         return managerRepo.save(manager);
     }
@@ -33,28 +36,29 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Override
     public Optional<Manager> findManagerByID(int id) {
-        Optional<Manager> findMgrById = managerRepo.findById(id);
-        return findMgrById;
+        Optional<Manager> manager = managerRepo.findById(id);
+        return manager;
     }
 
     @Override
     public List<Manager> getAllManager() {
-        List<Manager> listOfMgr = managerRepo.findAll();
-        return listOfMgr;
+        List<Manager> managers = managerRepo.findAll();
+        return managers;
     }
 
     @Override
-    public Manager updateManager(MgrValidation mgr) {
-        Optional<Manager> mgrdb = this.managerRepo.findById(mgr.getMid());
-        Manager mgrUpdt = mgrdb.get();
+    public Optional<Manager> updateManager(MgrValidation mgr) {
+        Optional<Manager> mgrdb = this.managerRepo.findById(mgr.getId());
 
         if(mgrdb.isPresent()){
-            mgrUpdt.setMid(mgr.getMid());
-            mgrUpdt.setMemail(mgr.getMemail());
-            mgrUpdt.setMname(mgr.getMname());
-            mgrUpdt.setMmob(mgr.getMmob());
-            mgrUpdt.setMdepartment(mgr.getMdepartment());
+            Manager mgrUpdt = mgrdb.get();
+            mgrUpdt.setId(mgr.getId());
+            mgrUpdt.setEmail(mgr.getEmail());
+            mgrUpdt.setName(mgr.getName());
+            mgrUpdt.setMobile(mgr.getMobile());
+            mgrUpdt.setDepartment(mgr.getDepartment());
+            return Optional.of(managerRepo.save(mgrUpdt));
         }
-        return mgrUpdt;
+           return Optional.empty();
     }
 }
